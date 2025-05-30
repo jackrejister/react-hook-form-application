@@ -2,17 +2,14 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  TextField,
-  Button,
-  Typography,
-  Alert,
-  Slider,
-} from '@mui/material';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Slider } from '@/components/ui/slider';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
 import { basicFormSchema, type BasicFormData } from '../schemas/formSchemas';
 
 const BasicForm: React.FC = () => {
@@ -43,134 +40,148 @@ const BasicForm: React.FC = () => {
   };
 
   return (
-    <Card sx={{ maxWidth: 600, mx: 'auto', mb: 4 }}>
-      <CardHeader
-        title={
-          <Typography variant="h5" component="h2" color="primary">
-            Basic Form Concepts
-          </Typography>
-        }
-        subheader="useForm, Controller, validation, and basic field types"
-      />
+    <Card className="max-w-2xl mx-auto mb-8">
+      <CardHeader>
+        <CardTitle className="text-2xl text-primary">
+          Basic Form Concepts
+        </CardTitle>
+        <p className="text-muted-foreground">
+          useForm, Controller, validation, and basic field types
+        </p>
+      </CardHeader>
       <CardContent>
-        <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-          <Controller
-            name="firstName"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                fullWidth
-                label="First Name"
-                error={!!errors.firstName}
-                helperText={errors.firstName?.message}
-                margin="normal"
-                variant="outlined"
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="firstName">First Name</Label>
+              <Controller
+                name="firstName"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    id="firstName"
+                    placeholder="Enter your first name"
+                    className={errors.firstName ? 'border-red-500' : ''}
+                  />
+                )}
               />
-            )}
-          />
+              {errors.firstName && (
+                <p className="text-sm text-red-500">{errors.firstName.message}</p>
+              )}
+            </div>
 
-          <Controller
-            name="lastName"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                fullWidth
-                label="Last Name"
-                error={!!errors.lastName}
-                helperText={errors.lastName?.message}
-                margin="normal"
-                variant="outlined"
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Last Name</Label>
+              <Controller
+                name="lastName"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    id="lastName"
+                    placeholder="Enter your last name"
+                    className={errors.lastName ? 'border-red-500' : ''}
+                  />
+                )}
               />
-            )}
-          />
+              {errors.lastName && (
+                <p className="text-sm text-red-500">{errors.lastName.message}</p>
+              )}
+            </div>
+          </div>
 
-          <Controller
-            name="email"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                fullWidth
-                label="Email"
-                type="email"
-                error={!!errors.email}
-                helperText={errors.email?.message}
-                margin="normal"
-                variant="outlined"
-              />
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  className={errors.email ? 'border-red-500' : ''}
+                />
+              )}
+            />
+            {errors.email && (
+              <p className="text-sm text-red-500">{errors.email.message}</p>
             )}
-          />
+          </div>
 
-          <Box sx={{ mt: 3, mb: 2 }}>
-            <Typography gutterBottom>
-              Age: {watchedAge} years
-            </Typography>
+          <div className="space-y-4">
+            <Label>Age: {watchedAge} years</Label>
             <Controller
               name="age"
               control={control}
-              render={({ field }) => (
+              render={({ field: { value, onChange } }) => (
                 <Slider
-                  {...field}
+                  value={[value]}
+                  onValueChange={(values) => onChange(values[0])}
                   min={18}
                   max={100}
-                  valueLabelDisplay="auto"
-                  sx={{ mt: 1 }}
+                  step={1}
+                  className="w-full"
                 />
               )}
             />
             {errors.age && (
-              <Typography color="error" variant="caption">
-                {errors.age.message}
-              </Typography>
+              <p className="text-sm text-red-500">{errors.age.message}</p>
             )}
-          </Box>
+          </div>
 
-          <Controller
-            name="bio"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                fullWidth
-                label="Bio"
-                multiline
-                rows={4}
-                error={!!errors.bio}
-                helperText={errors.bio?.message || `${field.value.length}/500 characters`}
-                margin="normal"
-                variant="outlined"
-              />
+          <div className="space-y-2">
+            <Label htmlFor="bio">Bio</Label>
+            <Controller
+              name="bio"
+              control={control}
+              render={({ field }) => (
+                <Textarea
+                  {...field}
+                  id="bio"
+                  placeholder="Tell us about yourself..."
+                  rows={4}
+                  className={errors.bio ? 'border-red-500' : ''}
+                />
+              )}
+            />
+            <p className="text-sm text-muted-foreground">
+              {field.value?.length || 0}/500 characters
+            </p>
+            {errors.bio && (
+              <p className="text-sm text-red-500">{errors.bio.message}</p>
             )}
-          />
+          </div>
 
-          <Box sx={{ mt: 3, display: 'flex', gap: 2 }}>
+          <div className="flex gap-4">
             <Button
               type="submit"
-              variant="contained"
-              color="primary"
               disabled={isSubmitting || !isValid}
-              sx={{ flex: 1 }}
+              className="flex-1"
             >
               {isSubmitting ? 'Submitting...' : 'Submit'}
             </Button>
             <Button
               type="button"
-              variant="outlined"
+              variant="outline"
               onClick={() => reset()}
-              sx={{ flex: 1 }}
+              className="flex-1"
             >
               Reset
             </Button>
-          </Box>
+          </div>
 
           {Object.keys(errors).length > 0 && (
-            <Alert severity="error" sx={{ mt: 2 }}>
-              Please fix the errors above before submitting.
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                Please fix the errors above before submitting.
+              </AlertDescription>
             </Alert>
           )}
-        </Box>
+        </form>
       </CardContent>
     </Card>
   );
