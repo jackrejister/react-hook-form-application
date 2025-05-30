@@ -17,7 +17,6 @@ import {
   FormHelperText,
   Chip,
   Paper,
-  Grid,
   Alert,
   LinearProgress,
 } from '@mui/material';
@@ -82,7 +81,7 @@ const ValidationForm: React.FC = () => {
   };
 
   return (
-    <Card sx={{ maxWidth: 800, mx: 'auto', mb: 4 }}>
+    <Card sx={{ width: '100%', maxWidth: 800, mx: 'auto', mb: 4 }}>
       <CardHeader
         title={
           <Typography variant="h5" component="h2" color="primary">
@@ -91,7 +90,7 @@ const ValidationForm: React.FC = () => {
         }
         subheader="Complex validation patterns with real-time feedback"
       />
-      <CardContent>
+      <CardContent sx={{ width: '100%' }}>
         <Paper sx={{ p: 2, mb: 3, backgroundColor: 'action.hover' }}>
           <Typography variant="h6" gutterBottom>
             Form Completion Progress
@@ -106,100 +105,104 @@ const ValidationForm: React.FC = () => {
           </Typography>
         </Paper>
 
-        <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
-              <Controller
-                name="username"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label="Username"
-                    placeholder="Enter username (3-20 chars)"
-                    error={!!errors.username}
-                    helperText={
-                      errors.username?.message || 
-                      (touchedFields.username && !errors.username && '✓ Username is valid')
-                    }
-                    variant="outlined"
-                    color={touchedFields.username && !errors.username ? 'success' : 'primary'}
-                  />
-                )}
-              />
-              <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                {watchedUsername.length}/20 characters
-              </Typography>
-            </Grid>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ width: '100%' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '100%' }}>
+            <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' }, width: '100%' }}>
+              <Box sx={{ flex: 1 }}>
+                <Controller
+                  name="username"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label="Username"
+                      placeholder="Enter username (3-20 chars)"
+                      error={!!errors.username}
+                      helperText={
+                        errors.username?.message || 
+                        (touchedFields.username && !errors.username && '✓ Username is valid')
+                      }
+                      variant="outlined"
+                      color={touchedFields.username && !errors.username ? 'success' : 'primary'}
+                    />
+                  )}
+                />
+                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                  {watchedUsername.length}/20 characters
+                </Typography>
+              </Box>
 
-            <Grid item xs={12} md={6}>
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label="Email Address"
-                    type="email"
-                    placeholder="Enter your email"
-                    error={!!errors.email}
-                    helperText={
-                      errors.email?.message || 
-                      (touchedFields.email && !errors.email && '✓ Email is valid')
-                    }
-                    variant="outlined"
-                    color={touchedFields.email && !errors.email ? 'success' : 'primary'}
-                  />
-                )}
-              />
-            </Grid>
+              <Box sx={{ flex: 1 }}>
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label="Email Address"
+                      type="email"
+                      placeholder="Enter your email"
+                      error={!!errors.email}
+                      helperText={
+                        errors.email?.message || 
+                        (touchedFields.email && !errors.email && '✓ Email is valid')
+                      }
+                      variant="outlined"
+                      color={touchedFields.email && !errors.email ? 'success' : 'primary'}
+                    />
+                  )}
+                />
+              </Box>
+            </Box>
 
-            <Grid item xs={12} md={6}>
-              <Controller
-                name="phone"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label="Phone Number"
-                    placeholder="+1 (555) 123-4567"
-                    error={!!errors.phone}
-                    helperText={
-                      errors.phone?.message || 
-                      (touchedFields.phone && !errors.phone && '✓ Phone number is valid')
-                    }
-                    variant="outlined"
-                    color={touchedFields.phone && !errors.phone ? 'success' : 'primary'}
-                  />
-                )}
-              />
-            </Grid>
+            <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' }, width: '100%' }}>
+              <Box sx={{ flex: 1 }}>
+                <Controller
+                  name="phone"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label="Phone Number"
+                      placeholder="+1 (555) 123-4567"
+                      error={!!errors.phone}
+                      helperText={
+                        errors.phone?.message || 
+                        (touchedFields.phone && !errors.phone && '✓ Phone number is valid')
+                      }
+                      variant="outlined"
+                      color={touchedFields.phone && !errors.phone ? 'success' : 'primary'}
+                    />
+                  )}
+                />
+              </Box>
 
-            <Grid item xs={12} md={6}>
-              <Controller
-                name="website"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label="Website (Optional)"
-                    placeholder="https://example.com"
-                    error={!!errors.website}
-                    helperText={
-                      errors.website?.message || 
-                      (touchedFields.website && !errors.website && field.value && '✓ URL is valid')
-                    }
-                    variant="outlined"
-                  />
-                )}
-              />
-            </Grid>
+              <Box sx={{ flex: 1 }}>
+                <Controller
+                  name="website"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label="Website (Optional)"
+                      placeholder="https://example.com"
+                      error={!!errors.website}
+                      helperText={
+                        errors.website?.message || 
+                        (touchedFields.website && !errors.website && field.value && '✓ URL is valid')
+                      }
+                      variant="outlined"
+                    />
+                  )}
+                />
+              </Box>
+            </Box>
 
-            <Grid item xs={12}>
+            <Box sx={{ width: '100%' }}>
               <FormControl fullWidth error={!!errors.priority}>
                 <InputLabel>Priority Level</InputLabel>
                 <Controller
@@ -215,9 +218,9 @@ const ValidationForm: React.FC = () => {
                 />
                 {errors.priority && <FormHelperText>{errors.priority.message}</FormHelperText>}
               </FormControl>
-            </Grid>
+            </Box>
 
-            <Grid item xs={12}>
+            <Box sx={{ width: '100%' }}>
               <Typography variant="body1" gutterBottom>
                 Select Tags
               </Typography>
@@ -225,7 +228,7 @@ const ValidationForm: React.FC = () => {
                 name="tags"
                 control={control}
                 render={({ field }) => (
-                  <Box>
+                  <Box sx={{ width: '100%' }}>
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
                       {availableTags.map((tag) => (
                         <Chip
@@ -255,38 +258,34 @@ const ValidationForm: React.FC = () => {
                   </Box>
                 )}
               />
-            </Grid>
+            </Box>
 
-            <Grid item xs={12}>
-              <Box sx={{ display: 'flex', gap: 2 }}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  disabled={isSubmitting}
-                  sx={{ flex: 1 }}
-                >
-                  {isSubmitting ? 'Submitting...' : 'Submit Form'}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outlined"
-                  onClick={() => reset()}
-                  sx={{ flex: 1 }}
-                >
-                  Reset Form
-                </Button>
-              </Box>
-            </Grid>
+            <Box sx={{ display: 'flex', gap: 2, width: '100%' }}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={isSubmitting}
+                sx={{ flex: 1 }}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit Form'}
+              </Button>
+              <Button
+                type="button"
+                variant="outlined"
+                onClick={() => reset()}
+                sx={{ flex: 1 }}
+              >
+                Reset Form
+              </Button>
+            </Box>
 
             {Object.keys(errors).length > 0 && (
-              <Grid item xs={12}>
-                <Alert severity="error">
-                  Please fix the {Object.keys(errors).length} error(s) above before submitting.
-                </Alert>
-              </Grid>
+              <Alert severity="error" sx={{ width: '100%' }}>
+                Please fix the {Object.keys(errors).length} error(s) above before submitting.
+              </Alert>
             )}
-          </Grid>
+          </Box>
         </Box>
       </CardContent>
     </Card>
