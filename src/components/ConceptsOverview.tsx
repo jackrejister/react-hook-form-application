@@ -1,40 +1,51 @@
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { 
-  CheckCircle, 
-  Code, 
-  FormInput, 
-  Shield, 
-  Eye, 
-  Zap 
-} from 'lucide-react';
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Chip,
+  Grid,
+  Container,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Paper,
+} from '@mui/material';
+import {
+  CheckCircle,
+  Code,
+  DynamicForm,
+  Visibility,
+  Speed,
+} from '@mui/icons-material';
 
 const ConceptsOverview: React.FC = () => {
   const concepts = [
     {
       title: 'Basic Form Handling',
       description: 'Simple form with validation and error handling',
-      icon: <CheckCircle className="w-6 h-6 text-primary" />,
+      icon: <CheckCircle color="primary" />,
       features: ['Basic field types', 'Real-time validation', 'Error messages', 'Form submission'],
     },
     {
       title: 'Advanced Features',
       description: 'Complex form elements and file handling',
-      icon: <Code className="w-6 h-6 text-primary" />,
+      icon: <Code color="primary" />,
       features: ['File uploads', 'Date pickers', 'Radio buttons', 'Checkboxes', 'Select dropdowns'],
     },
     {
       title: 'Dynamic Forms',
       description: 'Dynamic field arrays and conditional logic',
-      icon: <FormInput className="w-6 h-6 text-primary" />,
+      icon: <DynamicForm color="primary" />,
       features: ['useFieldArray', 'Add/remove fields', 'Nested objects', 'Dynamic validation'],
     },
     {
       title: 'Watch & Control',
       description: 'Real-time form state monitoring',
-      icon: <Eye className="w-6 h-6 text-primary" />,
+      icon: <Visibility color="primary" />,
       features: ['watch() hook', 'Conditional fields', 'Form state tracking', 'Real-time updates'],
     },
   ];
@@ -42,7 +53,7 @@ const ConceptsOverview: React.FC = () => {
   const formFeatures = [
     'TypeScript integration for type safety',
     'Zod schema validation for robust data validation',
-    'Shadcn/ui components for beautiful UI',
+    'Material-UI components for beautiful UI',
     'Dark theme for modern aesthetics',
     'Responsive design for all devices',
     'Performance optimized with minimal re-renders',
@@ -51,65 +62,75 @@ const ConceptsOverview: React.FC = () => {
   ];
 
   return (
-    <div className="mb-8">
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold text-primary mb-2">
+    <Container maxWidth="lg" sx={{ mb: 4 }}>
+      <Card sx={{ mb: 3 }}>
+        <CardContent sx={{ p: 4 }}>
+          <Typography variant="h3" component="h1" color="primary" gutterBottom sx={{ fontWeight: 'bold' }}>
             React Hook Form Complete Guide
-          </CardTitle>
-          <p className="text-xl text-muted-foreground">
+          </Typography>
+          <Typography variant="h5" color="text.secondary" gutterBottom sx={{ mb: 3 }}>
             Master every concept of React Hook Form with practical examples
-          </p>
-        </CardHeader>
-        <CardContent>
-          <p className="text-base mb-6 text-muted-foreground">
+          </Typography>
+          
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
             This comprehensive application demonstrates all React Hook Form concepts including form validation,
-            complex field types, dynamic forms, and advanced patterns using TypeScript, Zod validation, and Shadcn/ui.
-          </p>
+            complex field types, dynamic forms, and advanced patterns using TypeScript, Zod validation, and Material-UI.
+          </Typography>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <Grid container spacing={3} sx={{ mb: 4 }}>
             {concepts.map((concept, index) => (
-              <Card key={index} className="h-full">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    {concept.icon}
-                    <h3 className="text-lg font-semibold">{concept.title}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {concept.description}
-                  </p>
-                  <ul className="space-y-2">
-                    {concept.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center gap-2 text-sm">
-                        <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
+              <Grid item xs={12} md={6} key={index}>
+                <Card variant="outlined" sx={{ height: '100%' }}>
+                  <CardContent>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                      {concept.icon}
+                      <Typography variant="h6" sx={{ ml: 2 }}>
+                        {concept.title}
+                      </Typography>
+                    </Box>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      {concept.description}
+                    </Typography>
+                    <List dense>
+                      {concept.features.map((feature, idx) => (
+                        <ListItem key={idx} sx={{ py: 0.5 }}>
+                          <ListItemIcon sx={{ minWidth: 32 }}>
+                            <CheckCircle color="success" fontSize="small" />
+                          </ListItemIcon>
+                          <ListItemText 
+                            primary={feature} 
+                            primaryTypographyProps={{ variant: 'body2' }}
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </CardContent>
+                </Card>
+              </Grid>
             ))}
-          </div>
+          </Grid>
 
-          <Card className="bg-muted/50">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Zap className="w-5 h-5 text-primary" />
-                <h3 className="text-lg font-semibold">Key Features of This Application</h3>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {formFeatures.map((feature, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                    <span className="text-sm">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <Paper sx={{ p: 3, backgroundColor: 'action.hover' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              <Speed color="primary" />
+              <Typography variant="h6" sx={{ ml: 1 }}>
+                Key Features of This Application
+              </Typography>
+            </Box>
+            <Grid container spacing={2}>
+              {formFeatures.map((feature, index) => (
+                <Grid item xs={12} sm={6} key={index}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CheckCircle color="success" fontSize="small" sx={{ mr: 1 }} />
+                    <Typography variant="body2">{feature}</Typography>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Paper>
         </CardContent>
       </Card>
-    </div>
+    </Container>
   );
 };
 

@@ -1,22 +1,27 @@
 
 import React from 'react';
+import { Container, Box } from '@mui/material';
 import ConceptsOverview from '../components/ConceptsOverview';
 import BasicForm from '../components/BasicForm';
 import AdvancedForm from '../components/AdvancedForm';
 import DynamicForm from '../components/DynamicForm';
 import WatchForm from '../components/WatchForm';
+import ValidationForm from '../components/ValidationForm';
+import MultiStepForm from '../components/MultiStepForm';
 
 const Index: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default', py: 4 }}>
+      <Container maxWidth="lg">
         <ConceptsOverview />
         <BasicForm />
+        <ValidationForm />
         <AdvancedForm />
+        <MultiStepForm />
         <DynamicForm />
         <WatchForm />
-      </div>
-    </div>
+      </Container>
+    </Box>
   );
 };
 
