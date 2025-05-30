@@ -6,7 +6,6 @@ import {
   CardHeader,
   Typography,
   Box,
-  Grid,
   Paper,
   List,
   ListItem,
@@ -84,49 +83,54 @@ const ConceptsOverview: React.FC = () => {
             complex field types, dynamic forms, and advanced patterns using TypeScript, Zod validation, and Material UI.
           </Typography>
 
-          <Grid container spacing={3} sx={{ mt: 2 }}>
+          <Box sx={{ 
+            display: 'grid', 
+            gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, 
+            gap: 3, 
+            mt: 2 
+          }}>
             {concepts.map((concept, index) => (
-              <Grid item xs={12} md={6} key={index}>
-                <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    {concept.icon}
-                    <Typography variant="h6" sx={{ ml: 1 }}>
-                      {concept.title}
-                    </Typography>
-                  </Box>
-                  <Typography variant="body2" color="text.secondary" paragraph>
-                    {concept.description}
+              <Paper key={index} sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  {concept.icon}
+                  <Typography variant="h6" sx={{ ml: 1 }}>
+                    {concept.title}
                   </Typography>
-                  <List dense>
-                    {concept.features.map((feature, idx) => (
-                      <ListItem key={idx} sx={{ py: 0.5 }}>
-                        <ListItemIcon sx={{ minWidth: 36 }}>
-                          <CheckCircleOutline fontSize="small" color="success" />
-                        </ListItemIcon>
-                        <ListItemText primary={feature} />
-                      </ListItem>
-                    ))}
-                  </List>
-                </Paper>
-              </Grid>
+                </Box>
+                <Typography variant="body2" color="text.secondary" paragraph>
+                  {concept.description}
+                </Typography>
+                <List dense>
+                  {concept.features.map((feature, idx) => (
+                    <ListItem key={idx} sx={{ py: 0.5 }}>
+                      <ListItemIcon sx={{ minWidth: 36 }}>
+                        <CheckCircleOutline fontSize="small" color="success" />
+                      </ListItemIcon>
+                      <ListItemText primary={feature} />
+                    </ListItem>
+                  ))}
+                </List>
+              </Paper>
             ))}
-          </Grid>
+          </Box>
 
           <Paper sx={{ p: 3, mt: 3, backgroundColor: 'background.paper' }}>
             <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
               <Speed color="primary" sx={{ mr: 1 }} />
               Key Features of This Application
             </Typography>
-            <Grid container spacing={2}>
+            <Box sx={{ 
+              display: 'grid', 
+              gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, 
+              gap: 2 
+            }}>
               {formFeatures.map((feature, index) => (
-                <Grid item xs={12} sm={6} key={index}>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <CheckCircleOutline fontSize="small" color="success" sx={{ mr: 1 }} />
-                    <Typography variant="body2">{feature}</Typography>
-                  </Box>
-                </Grid>
+                <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
+                  <CheckCircleOutline fontSize="small" color="success" sx={{ mr: 1 }} />
+                  <Typography variant="body2">{feature}</Typography>
+                </Box>
               ))}
-            </Grid>
+            </Box>
           </Paper>
         </CardContent>
       </Card>
