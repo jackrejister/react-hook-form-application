@@ -59,7 +59,7 @@ const BasicForm: React.FC = () => {
       <CardContent>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
           <Grid container spacing={3}>
-            <Grid xs={12} md={6}>
+            <Grid item xs={12} md={6}>
               <Controller
                 name="firstName"
                 control={control}
@@ -77,7 +77,7 @@ const BasicForm: React.FC = () => {
               />
             </Grid>
 
-            <Grid xs={12} md={6}>
+            <Grid item xs={12} md={6}>
               <Controller
                 name="lastName"
                 control={control}
@@ -95,7 +95,7 @@ const BasicForm: React.FC = () => {
               />
             </Grid>
 
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <Controller
                 name="email"
                 control={control}
@@ -114,7 +114,7 @@ const BasicForm: React.FC = () => {
               />
             </Grid>
 
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <Typography gutterBottom>Age: {watchedAge} years</Typography>
               <Controller
                 name="age"
@@ -144,7 +144,7 @@ const BasicForm: React.FC = () => {
               )}
             </Grid>
 
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <Controller
                 name="bio"
                 control={control}
@@ -167,7 +167,7 @@ const BasicForm: React.FC = () => {
               </Typography>
             </Grid>
 
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <Box sx={{ display: 'flex', gap: 2 }}>
                 <Button
                   type="submit"
@@ -190,7 +190,7 @@ const BasicForm: React.FC = () => {
             </Grid>
 
             {Object.keys(errors).length > 0 && (
-              <Grid xs={12}>
+              <Grid item xs={12}>
                 <Alert severity="error" icon={<Error />}>
                   Please fix the errors above before submitting.
                 </Alert>
