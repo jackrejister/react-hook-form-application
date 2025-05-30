@@ -32,6 +32,7 @@ const BasicForm: React.FC = () => {
   });
 
   const watchedAge = watch('age');
+  const watchedBio = watch('bio');
 
   const onSubmit = async (data: BasicFormData) => {
     console.log('Basic Form Data:', data);
@@ -148,7 +149,7 @@ const BasicForm: React.FC = () => {
               )}
             />
             <p className="text-sm text-muted-foreground">
-              {field.value?.length || 0}/500 characters
+              {watchedBio?.length || 0}/500 characters
             </p>
             {errors.bio && (
               <p className="text-sm text-red-500">{errors.bio.message}</p>
