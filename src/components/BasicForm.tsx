@@ -12,7 +12,6 @@ import {
   Typography,
   Slider,
   Alert,
-  Grid,
   Paper,
 } from '@mui/material';
 import { Error } from '@mui/icons-material';
@@ -58,8 +57,8 @@ const BasicForm: React.FC = () => {
       />
       <CardContent>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
               <Controller
                 name="firstName"
                 control={control}
@@ -75,9 +74,7 @@ const BasicForm: React.FC = () => {
                   />
                 )}
               />
-            </Grid>
 
-            <Grid item xs={12} md={6}>
               <Controller
                 name="lastName"
                 control={control}
@@ -93,28 +90,26 @@ const BasicForm: React.FC = () => {
                   />
                 )}
               />
-            </Grid>
+            </Box>
 
-            <Grid item xs={12}>
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label="Email"
-                    type="email"
-                    placeholder="Enter your email"
-                    error={!!errors.email}
-                    helperText={errors.email?.message}
-                    variant="outlined"
-                  />
-                )}
-              />
-            </Grid>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label="Email"
+                  type="email"
+                  placeholder="Enter your email"
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                  variant="outlined"
+                />
+              )}
+            />
 
-            <Grid item xs={12}>
+            <Box>
               <Typography gutterBottom>Age: {watchedAge} years</Typography>
               <Controller
                 name="age"
@@ -142,9 +137,9 @@ const BasicForm: React.FC = () => {
                   {errors.age.message}
                 </Typography>
               )}
-            </Grid>
+            </Box>
 
-            <Grid item xs={12}>
+            <Box>
               <Controller
                 name="bio"
                 control={control}
@@ -165,38 +160,34 @@ const BasicForm: React.FC = () => {
               <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
                 {watchedBio?.length || 0}/500 characters
               </Typography>
-            </Grid>
+            </Box>
 
-            <Grid item xs={12}>
-              <Box sx={{ display: 'flex', gap: 2 }}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  disabled={isSubmitting || !isValid}
-                  sx={{ flex: 1 }}
-                >
-                  {isSubmitting ? 'Submitting...' : 'Submit'}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outlined"
-                  onClick={() => reset()}
-                  sx={{ flex: 1 }}
-                >
-                  Reset
-                </Button>
-              </Box>
-            </Grid>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={isSubmitting || !isValid}
+                sx={{ flex: 1 }}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit'}
+              </Button>
+              <Button
+                type="button"
+                variant="outlined"
+                onClick={() => reset()}
+                sx={{ flex: 1 }}
+              >
+                Reset
+              </Button>
+            </Box>
 
             {Object.keys(errors).length > 0 && (
-              <Grid item xs={12}>
-                <Alert severity="error" icon={<Error />}>
-                  Please fix the errors above before submitting.
-                </Alert>
-              </Grid>
+              <Alert severity="error" icon={<Error />}>
+                Please fix the errors above before submitting.
+              </Alert>
             )}
-          </Grid>
+          </Box>
         </Box>
       </CardContent>
     </Card>

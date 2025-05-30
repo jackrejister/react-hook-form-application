@@ -13,7 +13,6 @@ import {
   Stepper,
   Step,
   StepLabel,
-  Grid,
   FormControl,
   FormLabel,
   RadioGroup,
@@ -112,8 +111,8 @@ const MultiStepForm: React.FC = () => {
     switch (step) {
       case 0:
         return (
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
               <Controller
                 name="firstName"
                 control={control}
@@ -129,8 +128,6 @@ const MultiStepForm: React.FC = () => {
                   />
                 )}
               />
-            </Grid>
-            <Grid item xs={12} md={6}>
               <Controller
                 name="lastName"
                 control={control}
@@ -146,128 +143,118 @@ const MultiStepForm: React.FC = () => {
                   />
                 )}
               />
-            </Grid>
-            <Grid item xs={12}>
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label="Email"
-                    type="email"
-                    placeholder="Enter your email"
-                    error={!!errors.email}
-                    helperText={errors.email?.message}
-                    variant="outlined"
-                  />
-                )}
-              />
-            </Grid>
-          </Grid>
+            </Box>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label="Email"
+                  type="email"
+                  placeholder="Enter your email"
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                  variant="outlined"
+                />
+              )}
+            />
+          </Box>
         );
       
       case 1:
         return (
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <FormControl component="fieldset">
-                <FormLabel component="legend">Theme Preference</FormLabel>
-                <Controller
-                  name="theme"
-                  control={control}
-                  render={({ field }) => (
-                    <RadioGroup {...field} row>
-                      <FormControlLabel value="light" control={<Radio />} label="Light" />
-                      <FormControlLabel value="dark" control={<Radio />} label="Dark" />
-                      <FormControlLabel value="auto" control={<Radio />} label="Auto" />
-                    </RadioGroup>
-                  )}
-                />
-              </FormControl>
-            </Grid>
-            
-            <Grid item xs={12}>
-              <FormControl component="fieldset">
-                <FormLabel component="legend">Notification Preferences</FormLabel>
-                <Controller
-                  name="notifications"
-                  control={control}
-                  render={({ field: { value, onChange } }) => (
-                    <FormGroup>
-                      {['email', 'push', 'sms', 'newsletter'].map((option) => (
-                        <FormControlLabel
-                          key={option}
-                          control={
-                            <Checkbox
-                              checked={value.includes(option)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  onChange([...value, option]);
-                                } else {
-                                  onChange(value.filter((item) => item !== option));
-                                }
-                              }}
-                            />
-                          }
-                          label={option.charAt(0).toUpperCase() + option.slice(1)}
-                        />
-                      ))}
-                    </FormGroup>
-                  )}
-                />
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Theme Preference</FormLabel>
               <Controller
-                name="language"
+                name="theme"
                 control={control}
                 render={({ field }) => (
-                  <FormControl fullWidth error={!!errors.language}>
-                    <InputLabel>Preferred Language</InputLabel>
-                    <Select {...field} label="Preferred Language">
-                      <MenuItem value="en">English</MenuItem>
-                      <MenuItem value="es">Spanish</MenuItem>
-                      <MenuItem value="fr">French</MenuItem>
-                      <MenuItem value="de">German</MenuItem>
-                      <MenuItem value="zh">Chinese</MenuItem>
-                    </Select>
-                    {errors.language && (
-                      <Typography variant="caption" color="error">
-                        {errors.language.message}
-                      </Typography>
-                    )}
-                  </FormControl>
+                  <RadioGroup {...field} row>
+                    <FormControlLabel value="light" control={<Radio />} label="Light" />
+                    <FormControlLabel value="dark" control={<Radio />} label="Dark" />
+                    <FormControlLabel value="auto" control={<Radio />} label="Auto" />
+                  </RadioGroup>
                 )}
               />
-            </Grid>
-          </Grid>
+            </FormControl>
+            
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Notification Preferences</FormLabel>
+              <Controller
+                name="notifications"
+                control={control}
+                render={({ field: { value, onChange } }) => (
+                  <FormGroup>
+                    {['email', 'push', 'sms', 'newsletter'].map((option) => (
+                      <FormControlLabel
+                        key={option}
+                        control={
+                          <Checkbox
+                            checked={value.includes(option)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                onChange([...value, option]);
+                              } else {
+                                onChange(value.filter((item) => item !== option));
+                              }
+                            }}
+                          />
+                        }
+                        label={option.charAt(0).toUpperCase() + option.slice(1)}
+                      />
+                    ))}
+                  </FormGroup>
+                )}
+              />
+            </FormControl>
+
+            <Controller
+              name="language"
+              control={control}
+              render={({ field }) => (
+                <FormControl fullWidth error={!!errors.language}>
+                  <InputLabel>Preferred Language</InputLabel>
+                  <Select {...field} label="Preferred Language">
+                    <MenuItem value="en">English</MenuItem>
+                    <MenuItem value="es">Spanish</MenuItem>
+                    <MenuItem value="fr">French</MenuItem>
+                    <MenuItem value="de">German</MenuItem>
+                    <MenuItem value="zh">Chinese</MenuItem>
+                  </Select>
+                  {errors.language && (
+                    <Typography variant="caption" color="error">
+                      {errors.language.message}
+                    </Typography>
+                  )}
+                </FormControl>
+              )}
+            />
+          </Box>
         );
       
       case 2:
         return (
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Controller
-                name="username"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label="Username"
-                    placeholder="Choose a username"
-                    error={!!errors.username}
-                    helperText={errors.username?.message}
-                    variant="outlined"
-                  />
-                )}
-              />
-            </Grid>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Controller
+              name="username"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label="Username"
+                  placeholder="Choose a username"
+                  error={!!errors.username}
+                  helperText={errors.username?.message}
+                  variant="outlined"
+                />
+              )}
+            />
             
-            <Grid item xs={12}>
+            <Box>
               <Controller
                 name="bio"
                 control={control}
@@ -288,21 +275,19 @@ const MultiStepForm: React.FC = () => {
               <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
                 {watchedBio?.length || 0}/200 characters
               </Typography>
-            </Grid>
+            </Box>
 
-            <Grid item xs={12}>
-              <Controller
-                name="isPublic"
-                control={control}
-                render={({ field: { value, onChange } }) => (
-                  <FormControlLabel
-                    control={<Switch checked={value} onChange={onChange} />}
-                    label="Make profile public"
-                  />
-                )}
-              />
-            </Grid>
-          </Grid>
+            <Controller
+              name="isPublic"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <FormControlLabel
+                  control={<Switch checked={value} onChange={onChange} />}
+                  label="Make profile public"
+                />
+              )}
+            />
+          </Box>
         );
       
       default:
