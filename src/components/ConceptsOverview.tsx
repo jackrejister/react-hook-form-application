@@ -6,7 +6,7 @@ import {
   CardHeader,
   Typography,
   Box,
-  Grid2 as Grid,
+  Grid,
   Paper,
   List,
   ListItem,
@@ -86,7 +86,7 @@ const ConceptsOverview: React.FC = () => {
 
           <Grid container spacing={3} sx={{ mt: 2 }}>
             {concepts.map((concept, index) => (
-              <Grid size={{ xs: 12, md: 6 }} key={index}>
+              <Grid item xs={12} md={6} key={index}>
                 <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                     {concept.icon}
@@ -119,7 +119,7 @@ const ConceptsOverview: React.FC = () => {
             </Typography>
             <Grid container spacing={2}>
               {formFeatures.map((feature, index) => (
-                <Grid size={{ xs: 12, sm: 6 }} key={index}>
+                <Grid item xs={12} sm={6} key={index}>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <CheckCircleOutline fontSize="small" color="success" sx={{ mr: 1 }} />
                     <Typography variant="body2">{feature}</Typography>
