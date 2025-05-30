@@ -1,7 +1,5 @@
 
 import React from 'react';
-import { ThemeProvider, CssBaseline, Container, Box } from '@mui/material';
-import { darkTheme } from '../theme/theme';
 import ConceptsOverview from '../components/ConceptsOverview';
 import BasicForm from '../components/BasicForm';
 import AdvancedForm from '../components/AdvancedForm';
@@ -10,18 +8,15 @@ import WatchForm from '../components/WatchForm';
 
 const Index: React.FC = () => {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <Container maxWidth="lg">
-        <Box sx={{ py: 4 }}>
-          <ConceptsOverview />
-          <BasicForm />
-          <AdvancedForm />
-          <DynamicForm />
-          <WatchForm />
-        </Box>
-      </Container>
-    </ThemeProvider>
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <ConceptsOverview />
+        <BasicForm />
+        <AdvancedForm />
+        <DynamicForm />
+        <WatchForm />
+      </div>
+    </div>
   );
 };
 
