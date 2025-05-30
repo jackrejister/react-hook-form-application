@@ -1,11 +1,10 @@
-
 import React from 'react';
 import {
   Box,
   Card,
   CardContent,
   Typography,
-  Grid2 as Grid,
+  Grid,
   Container,
   List,
   ListItem,

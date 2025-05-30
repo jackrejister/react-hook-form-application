@@ -116,7 +116,7 @@ const MultiStepForm: React.FC = () => {
       case 0:
         return (
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+            <Grid xs={12} md={6}>
               <Controller
                 name="firstName"
                 control={control}
@@ -132,7 +132,7 @@ const MultiStepForm: React.FC = () => {
                 )}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid xs={12} md={6}>
               <Controller
                 name="lastName"
                 control={control}
@@ -148,7 +148,7 @@ const MultiStepForm: React.FC = () => {
                 )}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid xs={12}>
               <Controller
                 name="email"
                 control={control}
@@ -171,7 +171,7 @@ const MultiStepForm: React.FC = () => {
       case 1:
         return (
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid xs={12}>
               <FormControl component="fieldset">
                 <FormLabel component="legend">Theme Preference</FormLabel>
                 <Controller
@@ -188,7 +188,7 @@ const MultiStepForm: React.FC = () => {
               </FormControl>
             </Grid>
             
-            <Grid item xs={12}>
+            <Grid xs={12}>
               <FormControl component="fieldset">
                 <FormLabel component="legend">Notification Preferences</FormLabel>
                 <Controller
@@ -220,7 +220,7 @@ const MultiStepForm: React.FC = () => {
               </FormControl>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid xs={12}>
               <Controller
                 name="language"
                 control={control}
@@ -251,7 +251,7 @@ const MultiStepForm: React.FC = () => {
       case 2:
         return (
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid xs={12}>
               <Controller
                 name="username"
                 control={control}
@@ -268,7 +268,7 @@ const MultiStepForm: React.FC = () => {
               />
             </Grid>
             
-            <Grid item xs={12}>
+            <Grid xs={12}>
               <Controller
                 name="bio"
                 control={control}
@@ -290,7 +290,7 @@ const MultiStepForm: React.FC = () => {
               </Typography>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid xs={12}>
               <Controller
                 name="isPublic"
                 control={control}

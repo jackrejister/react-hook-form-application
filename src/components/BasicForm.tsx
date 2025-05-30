@@ -12,7 +12,7 @@ import {
   Typography,
   Slider,
   Alert,
-  Grid2 as Grid,
+  Grid,
   Paper,
 } from '@mui/material';
 import { Error } from '@mui/icons-material';
