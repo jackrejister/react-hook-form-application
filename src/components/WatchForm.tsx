@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -15,22 +15,17 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Select,
+  MenuItem,
+  InputLabel,
   Checkbox,
   FormGroup,
-  Alert,
+  FormHelperText,
   Paper,
-  Divider,
   Chip,
+  Alert,
 } from '@mui/material';
 import { watchFormSchema, type WatchFormData } from '../schemas/formSchemas';
-
-const subscriptionFeatures = {
-  basic: ['Email Support', 'Basic Analytics', '5 Users'],
-  premium: ['Email Support', 'Basic Analytics', '25 Users', 'Chat Support', 'Advanced Analytics'],
-  enterprise: ['Email Support', 'Basic Analytics', 'Unlimited Users', 'Chat Support', 'Advanced Analytics', 'Phone Support', 'Custom Integration'],
-};
-
-const additionalServices = ['Training', 'Custom Development', 'Priority Support', 'Data Migration'];
 
 const WatchForm: React.FC = () => {
   const {
@@ -39,6 +34,7 @@ const WatchForm: React.FC = () => {
     formState: { errors, isSubmitting },
     reset,
     watch,
+    setValue,
   } = useForm<WatchFormData>({
     resolver: zodResolver(watchFormSchema),
     mode: 'onChange',
@@ -52,51 +48,104 @@ const WatchForm: React.FC = () => {
     },
   });
 
-  // Watch specific fields to create conditional logic
   const watchedSubscription = watch('subscriptionType');
-  const watchedCustomDomain = watch('customDomain');
   const watchedFeatures = watch('features');
   const watchedMaxUsers = watch('maxUsers');
-  const watchedSupportLevel = watch('supportLevel');
+  const watchedCustomDomain = watch('customDomain');
+
+  // Dynamic feature options based on subscription type
+  const getAvailableFeatures = (subscriptionType: string) => {
+    const baseFeatures = ['Basic Support', 'Dashboard Access'];
+    const premiumFeatures = ['Priority Support', 'Advanced Analytics', 'API Access'];
+    const enterpriseFeatures = ['24/7 Support', 'Custom Integrations', 'Dedicated Manager'];
+
+    switch (subscriptionType) {
+      case 'basic':
+        return baseFeatures;
+      case 'premium':
+        return [...baseFeatures, ...premiumFeatures];
+      case 'enterprise':
+        return [...baseFeatures, ...premiumFeatures, ...enterpriseFeatures];
+      default:
+        return baseFeatures;
+    }
+  };
+
+  const availableFeatures = getAvailableFeatures(watchedSubscription);
+
+  // Dynamic max users based on subscription
+  const getMaxUsersLimit = (subscriptionType: string) => {
+    switch (subscriptionType) {
+      case 'basic':
+        return 5;
+      case 'premium':
+        return 50;
+      case 'enterprise':
+        return 1000;
+      default:
+        return 5;
+    }
+  };
+
+  const maxUsersLimit = getMaxUsersLimit(watchedSubscription);
+
+  // Dynamic additional services
+  const getAdditionalServices = (subscriptionType: string) => {
+    const services = ['Training', 'Migration Help'];
+    if (subscriptionType === 'premium' || subscriptionType === 'enterprise') {
+      services.push('Custom Development', 'Consulting');
+    }
+    if (subscriptionType === 'enterprise') {
+      services.push('On-site Support', 'SLA Agreement');
+    }
+    return services;
+  };
+
+  const additionalServices = getAdditionalServices(watchedSubscription);
+
+  // Update max users when subscription changes
+  useEffect(() => {
+    if (watchedMaxUsers > maxUsersLimit) {
+      setValue('maxUsers', maxUsersLimit);
+    }
+  }, [watchedSubscription, watchedMaxUsers, maxUsersLimit, setValue]);
+
+  // Clear features that are no longer available
+  useEffect(() => {
+    const currentFeatures = watchedFeatures.filter(feature => 
+      availableFeatures.includes(feature)
+    );
+    if (currentFeatures.length !== watchedFeatures.length) {
+      setValue('features', currentFeatures);
+    }
+  }, [watchedSubscription, watchedFeatures, availableFeatures, setValue]);
 
   const onSubmit = async (data: WatchFormData) => {
     console.log('Watch Form Data:', data);
     await new Promise(resolve => setTimeout(resolve, 1000));
-    alert('Subscription form submitted successfully!');
+    alert('Watch form submitted successfully!');
   };
 
-  const calculatePrice = () => {
-    let basePrice = 0;
-    switch (watchedSubscription) {
-      case 'basic':
-        basePrice = 29;
-        break;
-      case 'premium':
-        basePrice = 99;
-        break;
-      case 'enterprise':
-        basePrice = 299;
-        break;
-    }
-
-    if (watchedCustomDomain) basePrice += 20;
-    if (watchedSupportLevel === 'chat') basePrice += 30;
-    if (watchedSupportLevel === 'phone') basePrice += 50;
-
-    return basePrice;
+  const getSubscriptionPrice = () => {
+    const basePrice = watchedSubscription === 'basic' ? 10 : 
+                     watchedSubscription === 'premium' ? 50 : 200;
+    const userPrice = Math.max(0, watchedMaxUsers - 1) * 
+                     (watchedSubscription === 'basic' ? 2 : 
+                      watchedSubscription === 'premium' ? 5 : 10);
+    const domainPrice = watchedCustomDomain ? 20 : 0;
+    
+    return basePrice + userPrice + domainPrice;
   };
-
-  const availableFeatures = subscriptionFeatures[watchedSubscription] || [];
 
   return (
-    <Card sx={{ maxWidth: 700, mx: 'auto', mb: 4 }}>
+    <Card sx={{ maxWidth: 600, mx: 'auto', mb: 4 }}>
       <CardHeader
         title={
           <Typography variant="h5" component="h2" color="primary">
-            Watch & Conditional Forms
+            Watch & Conditional Logic
           </Typography>
         }
-        subheader="Using watch() for conditional rendering and real-time updates"
+        subheader="Real-time form state monitoring and conditional field rendering"
       />
       <CardContent>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -107,23 +156,31 @@ const WatchForm: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <RadioGroup {...field} row>
-                  <FormControlLabel value="basic" control={<Radio />} label="Basic ($29/mo)" />
-                  <FormControlLabel value="premium" control={<Radio />} label="Premium ($99/mo)" />
-                  <FormControlLabel value="enterprise" control={<Radio />} label="Enterprise ($299/mo)" />
+                  <FormControlLabel value="basic" control={<Radio />} label="Basic ($10/mo)" />
+                  <FormControlLabel value="premium" control={<Radio />} label="Premium ($50/mo)" />
+                  <FormControlLabel value="enterprise" control={<Radio />} label="Enterprise ($200/mo)" />
                 </RadioGroup>
               )}
             />
+            {errors.subscriptionType && <FormHelperText>{errors.subscriptionType.message}</FormHelperText>}
           </FormControl>
 
-          <Paper sx={{ p: 2, mt: 2, mb: 2, backgroundColor: 'background.paper' }}>
+          <Paper sx={{ p: 2, my: 2, backgroundColor: 'action.hover' }}>
             <Typography variant="h6" gutterBottom>
-              Included Features for {watchedSubscription.charAt(0).toUpperCase() + watchedSubscription.slice(1)}
+              Live Subscription Summary
             </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              {availableFeatures.map((feature) => (
-                <Chip key={feature} label={feature} color="primary" size="small" />
-              ))}
-            </Box>
+            <Typography variant="body2">
+              <strong>Plan:</strong> {watchedSubscription.charAt(0).toUpperCase() + watchedSubscription.slice(1)}
+            </Typography>
+            <Typography variant="body2">
+              <strong>Users:</strong> {watchedMaxUsers} (max: {maxUsersLimit})
+            </Typography>
+            <Typography variant="body2">
+              <strong>Custom Domain:</strong> {watchedCustomDomain ? 'Yes (+$20)' : 'No'}
+            </Typography>
+            <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
+              Total: ${getSubscriptionPrice()}/month
+            </Typography>
           </Paper>
 
           <Controller
@@ -133,125 +190,120 @@ const WatchForm: React.FC = () => {
               <TextField
                 {...field}
                 fullWidth
-                label="Maximum Users"
+                label={`Maximum Users (1-${maxUsersLimit})`}
                 type="number"
-                inputProps={{ 
-                  min: 1, 
-                  max: watchedSubscription === 'basic' ? 5 : 
-                       watchedSubscription === 'premium' ? 25 : 
-                       1000 
-                }}
+                inputProps={{ min: 1, max: maxUsersLimit }}
                 error={!!errors.maxUsers}
-                helperText={
-                  errors.maxUsers?.message || 
-                  `Limit: ${watchedSubscription === 'basic' ? '5' : 
-                           watchedSubscription === 'premium' ? '25' : 
-                           'Unlimited'} users`
-                }
+                helperText={errors.maxUsers?.message}
                 margin="normal"
                 variant="outlined"
+                onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
               />
             )}
           />
 
-          <FormControl component="fieldset" margin="normal">
-            <FormLabel component="legend">Additional Features</FormLabel>
+          <FormControl component="fieldset" margin="normal" error={!!errors.features}>
+            <FormLabel component="legend">Available Features</FormLabel>
+            <Controller
+              name="features"
+              control={control}
+              render={({ field }) => (
+                <FormGroup>
+                  {availableFeatures.map((feature) => (
+                    <FormControlLabel
+                      key={feature}
+                      control={
+                        <Checkbox
+                          checked={field.value.includes(feature)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              field.onChange([...field.value, feature]);
+                            } else {
+                              field.onChange(field.value.filter((f) => f !== feature));
+                            }
+                          }}
+                        />
+                      }
+                      label={feature}
+                    />
+                  ))}
+                </FormGroup>
+              )}
+            />
+            {errors.features && <FormHelperText>{errors.features.message}</FormHelperText>}
+            <Box sx={{ mt: 1 }}>
+              {watchedFeatures.map((feature) => (
+                <Chip key={feature} label={feature} size="small" sx={{ mr: 1, mb: 1 }} />
+              ))}
+            </Box>
+          </FormControl>
+
+          {(watchedSubscription === 'premium' || watchedSubscription === 'enterprise') && (
             <Controller
               name="customDomain"
               control={control}
               render={({ field }) => (
                 <FormControlLabel
                   control={<Checkbox {...field} checked={field.value} />}
-                  label="Custom Domain (+$20/mo)"
-                  disabled={watchedSubscription === 'basic'}
+                  label="Custom Domain (+$20/month)"
+                  sx={{ mt: 1 }}
                 />
               )}
             />
+          )}
+
+          <FormControl fullWidth margin="normal" error={!!errors.supportLevel}>
+            <InputLabel>Support Level</InputLabel>
+            <Controller
+              name="supportLevel"
+              control={control}
+              render={({ field }) => (
+                <Select {...field} label="Support Level">
+                  <MenuItem value="email">Email Support</MenuItem>
+                  {(watchedSubscription === 'premium' || watchedSubscription === 'enterprise') && (
+                    <MenuItem value="chat">Live Chat Support</MenuItem>
+                  )}
+                  {watchedSubscription === 'enterprise' && (
+                    <MenuItem value="phone">Phone Support</MenuItem>
+                  )}
+                </Select>
+              )}
+            />
+            {errors.supportLevel && <FormHelperText>{errors.supportLevel.message}</FormHelperText>}
           </FormControl>
 
-          {watchedSubscription !== 'basic' && (
-            <FormControl component="fieldset" margin="normal" error={!!errors.supportLevel}>
-              <FormLabel component="legend">Support Level</FormLabel>
+          {additionalServices.length > 0 && (
+            <FormControl component="fieldset" margin="normal">
+              <FormLabel component="legend">Additional Services</FormLabel>
               <Controller
-                name="supportLevel"
+                name="additionalServices"
                 control={control}
                 render={({ field }) => (
-                  <RadioGroup {...field}>
-                    <FormControlLabel value="email" control={<Radio />} label="Email Support (Included)" />
-                    <FormControlLabel 
-                      value="chat" 
-                      control={<Radio />} 
-                      label="Chat Support (+$30/mo)"
-                      disabled={watchedSubscription === 'basic'}
-                    />
-                    <FormControlLabel 
-                      value="phone" 
-                      control={<Radio />} 
-                      label="Phone Support (+$50/mo)"
-                      disabled={watchedSubscription !== 'enterprise'}
-                    />
-                  </RadioGroup>
+                  <FormGroup>
+                    {additionalServices.map((service) => (
+                      <FormControlLabel
+                        key={service}
+                        control={
+                          <Checkbox
+                            checked={field.value?.includes(service) || false}
+                            onChange={(e) => {
+                              const currentServices = field.value || [];
+                              if (e.target.checked) {
+                                field.onChange([...currentServices, service]);
+                              } else {
+                                field.onChange(currentServices.filter((s) => s !== service));
+                              }
+                            }}
+                          />
+                        }
+                        label={service}
+                      />
+                    ))}
+                  </FormGroup>
                 )}
               />
             </FormControl>
           )}
-
-          <FormControl component="fieldset" margin="normal">
-            <FormLabel component="legend">Additional Services</FormLabel>
-            <Controller
-              name="additionalServices"
-              control={control}
-              render={({ field }) => (
-                <FormGroup>
-                  {additionalServices.map((service) => (
-                    <FormControlLabel
-                      key={service}
-                      control={
-                        <Checkbox
-                          checked={field.value?.includes(service) || false}
-                          onChange={(e) => {
-                            const current = field.value || [];
-                            if (e.target.checked) {
-                              field.onChange([...current, service]);
-                            } else {
-                              field.onChange(current.filter((s) => s !== service));
-                            }
-                          }}
-                        />
-                      }
-                      label={service}
-                    />
-                  ))}
-                </FormGroup>
-              )}
-            />
-          </FormControl>
-
-          <Divider sx={{ my: 3 }} />
-
-          <Paper sx={{ p: 2, mb: 3, backgroundColor: 'primary.dark' }}>
-            <Typography variant="h6" gutterBottom>
-              Order Summary
-            </Typography>
-            <Typography variant="body1">
-              Subscription: {watchedSubscription.charAt(0).toUpperCase() + watchedSubscription.slice(1)}
-            </Typography>
-            <Typography variant="body1">
-              Users: {watchedMaxUsers}
-            </Typography>
-            <Typography variant="body1">
-              Support: {watchedSupportLevel.charAt(0).toUpperCase() + watchedSupportLevel.slice(1)}
-            </Typography>
-            {watchedCustomDomain && (
-              <Typography variant="body1">
-                Custom Domain: Enabled
-              </Typography>
-            )}
-            <Divider sx={{ my: 1 }} />
-            <Typography variant="h6" color="secondary">
-              Total: ${calculatePrice()}/month
-            </Typography>
-          </Paper>
 
           <Box sx={{ mt: 3, display: 'flex', gap: 2 }}>
             <Button
@@ -261,7 +313,7 @@ const WatchForm: React.FC = () => {
               disabled={isSubmitting}
               sx={{ flex: 1 }}
             >
-              {isSubmitting ? 'Processing...' : 'Subscribe Now'}
+              {isSubmitting ? 'Submitting...' : 'Subscribe'}
             </Button>
             <Button
               type="button"

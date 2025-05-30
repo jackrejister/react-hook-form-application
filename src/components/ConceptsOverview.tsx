@@ -1,147 +1,135 @@
 
 import React from 'react';
 import {
-  Box,
   Card,
   CardContent,
+  CardHeader,
   Typography,
+  Box,
   Grid,
-  Chip,
+  Paper,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Paper,
 } from '@mui/material';
 import {
-  CheckCircle,
+  CheckCircleOutline,
   Code,
-  Visibility,
   DynamicForm,
-  Validation,
+  Security,
+  Visibility,
+  Speed,
+  BugReport,
+  Group,
 } from '@mui/icons-material';
 
 const ConceptsOverview: React.FC = () => {
   const concepts = [
     {
-      title: 'Basic Concepts',
-      icon: <Code />,
-      concepts: [
-        'useForm hook initialization',
-        'Controller component for controlled inputs',
-        'Form validation with Zod',
-        'Error handling and display',
-        'Form state management (isSubmitting, isValid)',
-        'Reset functionality',
-        'Basic field types (text, email, number, textarea)',
-      ],
+      title: 'Basic Form Handling',
+      description: 'Simple form with validation and error handling',
+      icon: <CheckCircleOutline color="primary" />,
+      features: ['Basic field types', 'Real-time validation', 'Error messages', 'Form submission'],
     },
     {
       title: 'Advanced Features',
-      icon: <Validation />,
-      concepts: [
-        'Complex validation schemas',
-        'Password confirmation validation',
-        'File upload handling',
-        'Date picker integration',
-        'Radio groups and checkboxes',
-        'Select dropdowns with options',
-        'Custom validation messages',
-        'Field touch states',
-      ],
+      description: 'Complex form elements and file handling',
+      icon: <Code color="primary" />,
+      features: ['File uploads', 'Date pickers', 'Radio buttons', 'Checkboxes', 'Select dropdowns'],
     },
     {
       title: 'Dynamic Forms',
-      icon: <DynamicForm />,
-      concepts: [
-        'useFieldArray for dynamic fields',
-        'Adding and removing form fields',
-        'Nested object validation',
-        'Dynamic tag management',
-        'Array field validation',
-        'Complex nested forms',
-        'Field array manipulation',
-      ],
+      description: 'Dynamic field arrays and conditional logic',
+      icon: <DynamicForm color="primary" />,
+      features: ['useFieldArray', 'Add/remove fields', 'Nested objects', 'Dynamic validation'],
     },
     {
-      title: 'Watch & Conditional',
-      icon: <Visibility />,
-      concepts: [
-        'watch() for real-time field monitoring',
-        'Conditional field rendering',
-        'Dependent field validation',
-        'Real-time price calculation',
-        'Dynamic feature lists',
-        'Subscription-based field enabling',
-        'Form state-based UI updates',
-      ],
+      title: 'Watch & Control',
+      description: 'Real-time form state monitoring',
+      icon: <Visibility color="primary" />,
+      features: ['watch() hook', 'Conditional fields', 'Form state tracking', 'Real-time updates'],
     },
   ];
 
-  const features = [
-    'TypeScript integration',
-    'Zod schema validation',
-    'Material-UI dark theme',
-    'Responsive design',
-    'Real-time validation',
-    'File upload preview',
-    'Dynamic pricing',
-    'Conditional logic',
+  const formFeatures = [
+    'TypeScript integration for type safety',
+    'Zod schema validation for robust data validation',
+    'Material UI components for beautiful UI',
+    'Dark theme for modern aesthetics',
+    'Responsive design for all devices',
+    'Performance optimized with minimal re-renders',
+    'Comprehensive error handling',
+    'Accessibility features built-in',
   ];
 
   return (
     <Box sx={{ mb: 4 }}>
-      <Card sx={{ mb: 4 }}>
-        <CardContent>
-          <Typography variant="h4" component="h1" gutterBottom align="center" color="primary">
-            React Hook Form Comprehensive Guide
-          </Typography>
-          <Typography variant="h6" align="center" color="text.secondary" gutterBottom>
-            A complete showcase of React Hook Form features with Material-UI and Zod validation
-          </Typography>
-          
-          <Paper sx={{ p: 2, mt: 3, backgroundColor: 'background.paper' }}>
-            <Typography variant="h6" gutterBottom>
-              Features Demonstrated
+      <Card sx={{ mb: 3 }}>
+        <CardHeader
+          title={
+            <Typography variant="h4" component="h1" color="primary" gutterBottom>
+              React Hook Form Complete Guide
             </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              {features.map((feature) => (
-                <Chip key={feature} label={feature} color="secondary" size="small" />
+          }
+          subheader={
+            <Typography variant="h6" color="text.secondary">
+              Master every concept of React Hook Form with practical examples
+            </Typography>
+          }
+        />
+        <CardContent>
+          <Typography variant="body1" paragraph>
+            This comprehensive application demonstrates all React Hook Form concepts including form validation,
+            complex field types, dynamic forms, and advanced patterns using TypeScript, Zod validation, and Material UI.
+          </Typography>
+
+          <Grid container spacing={3} sx={{ mt: 2 }}>
+            {concepts.map((concept, index) => (
+              <Grid xs={12} md={6} key={index}>
+                <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    {concept.icon}
+                    <Typography variant="h6" sx={{ ml: 1 }}>
+                      {concept.title}
+                    </Typography>
+                  </Box>
+                  <Typography variant="body2" color="text.secondary" paragraph>
+                    {concept.description}
+                  </Typography>
+                  <List dense>
+                    {concept.features.map((feature, idx) => (
+                      <ListItem key={idx} sx={{ py: 0.5 }}>
+                        <ListItemIcon sx={{ minWidth: 36 }}>
+                          <CheckCircleOutline fontSize="small" color="success" />
+                        </ListItemIcon>
+                        <ListItemText primary={feature} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
+
+          <Paper sx={{ p: 3, mt: 3, backgroundColor: 'background.paper' }}>
+            <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+              <Speed color="primary" sx={{ mr: 1 }} />
+              Key Features of This Application
+            </Typography>
+            <Grid container spacing={2}>
+              {formFeatures.map((feature, index) => (
+                <Grid xs={12} sm={6} key={index}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CheckCircleOutline fontSize="small" color="success" sx={{ mr: 1 }} />
+                    <Typography variant="body2">{feature}</Typography>
+                  </Box>
+                </Grid>
               ))}
-            </Box>
+            </Grid>
           </Paper>
         </CardContent>
       </Card>
-
-      <Grid container spacing={3}>
-        {concepts.map((section, index) => (
-          <Grid item xs={12} md={6} key={index}>
-            <Card sx={{ height: '100%' }}>
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  {section.icon}
-                  <Typography variant="h6" component="h2" sx={{ ml: 1 }}>
-                    {section.title}
-                  </Typography>
-                </Box>
-                <List dense>
-                  {section.concepts.map((concept, conceptIndex) => (
-                    <ListItem key={conceptIndex} sx={{ py: 0.5 }}>
-                      <ListItemIcon sx={{ minWidth: 36 }}>
-                        <CheckCircle color="primary" fontSize="small" />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={concept}
-                        primaryTypographyProps={{ variant: 'body2' }}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
     </Box>
   );
 };
