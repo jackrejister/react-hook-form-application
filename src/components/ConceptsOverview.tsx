@@ -5,8 +5,7 @@ import {
   Card,
   CardContent,
   Typography,
-  Chip,
-  Grid,
+  Grid2 as Grid,
   Container,
   List,
   ListItem,
@@ -79,7 +78,7 @@ const ConceptsOverview: React.FC = () => {
 
           <Grid container spacing={3} sx={{ mb: 4 }}>
             {concepts.map((concept, index) => (
-              <Grid item xs={12} md={6} key={index}>
+              <Grid xs={12} md={6} key={index}>
                 <Card variant="outlined" sx={{ height: '100%' }}>
                   <CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -119,7 +118,7 @@ const ConceptsOverview: React.FC = () => {
             </Box>
             <Grid container spacing={2}>
               {formFeatures.map((feature, index) => (
-                <Grid item xs={12} sm={6} key={index}>
+                <Grid xs={12} sm={6} key={index}>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <CheckCircle color="success" fontSize="small" sx={{ mr: 1 }} />
                     <Typography variant="body2">{feature}</Typography>
